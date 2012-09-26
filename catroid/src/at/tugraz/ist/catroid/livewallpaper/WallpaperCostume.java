@@ -25,7 +25,6 @@ package at.tugraz.ist.catroid.livewallpaper;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import at.tugraz.ist.catroid.common.CostumeData;
 import at.tugraz.ist.catroid.common.Values;
 import at.tugraz.ist.catroid.content.Sprite;
@@ -55,6 +54,7 @@ public class WallpaperCostume {
 	private boolean topNeedsAdjustment = false;
 	private boolean leftNeedsAdjustment = false;
 	private boolean sizeChanged = false;
+	private boolean isRecycled = false;
 
 	private WallpaperHelper wallpaperHelper;
 
@@ -440,12 +440,17 @@ public class WallpaperCostume {
 	}
 
 	public void rotate(float rotation) {
-		Matrix matrix = new Matrix();
-		matrix.setRotate(rotation, (float) costume.getWidth() / 2, (float) costume.getHeight() / 2);
-		Bitmap rotatedBitmap = Bitmap.createBitmap(this.costume, 0, 0, this.costume.getWidth(),
-				this.costume.getHeight(), matrix, true);
-		this.costume = rotatedBitmap;
+
+		this.costume = ImageEditing.rotateBitmap(this.costume, (int) rotation);
 		this.topNeedsAdjustment = true;
 		this.leftNeedsAdjustment = true;
+	}
+
+	public boolean isRecycled() {
+		return isRecycled;
+	}
+
+	public void setRecycled(boolean isRecycled) {
+		this.isRecycled = isRecycled;
 	}
 }
